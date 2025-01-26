@@ -1,10 +1,14 @@
 
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
-export const VALIDATION_ERROR = 'VALIDATION_ERROR';
+export const LOGIN_REQUEST = "LOGIN_REQUEST";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
+export const VALIDATION_ERRORS = "VALIDATION_ERRORS";
+// export const LOGOUT = "LOGOUT";
+// export const REFRESH_TOKEN_SUCCESS = "REFRESH_TOKEN_SUCCESS";
+// export const REFRESH_TOKEN_FAILURE = "REFRESH_TOKEN_FAILURE";
 
 export interface AuthState {
+    isAuthenticated: boolean
     loading: boolean;
     error: string | null;
     validationErrors: Array<{ field: string; message: string }>;
@@ -15,12 +19,6 @@ export interface LoginPayload {
     password: string;
 }
 
-// export interface LoginSuccessPayload {
-//     access_token: string,
-//     refresh_token: string,
-//     access_expired_at: number,
-//     refresh_expired_at: number
-// }
 
 export interface LoginFailurePayload {
     error: string;
@@ -35,10 +33,9 @@ interface LoginRequestAction {
     payload: LoginPayload;
 }
 
-// interface LoginSuccessAction {
-//     type: typeof LOGIN_SUCCESS;
-//     payload: LoginSuccessPayload;
-// }
+interface LoginSuccessAction {
+    type: typeof LOGIN_SUCCESS;
+}
 
 interface LoginFailureAction {
     type: typeof LOGIN_FAILURE;
@@ -46,16 +43,15 @@ interface LoginFailureAction {
 }
 
 interface ValidationErrorAction {
-    type: typeof VALIDATION_ERROR;
+    type: typeof VALIDATION_ERRORS;
     payload: ValidationErrorPayload;
 }
 
 export type AuthActionTypes =
     | LoginRequestAction
-    // | LoginSuccessAction
+    | LoginSuccessAction
     | LoginFailureAction
     | ValidationErrorAction
-
 
 
 /**Action creators */
@@ -64,55 +60,74 @@ export const loginRequest = (payload: LoginPayload) => ({
     payload,
 });
 
-// export const loginSuccess = (payload: LoginSuccessPayload) => ({
-//     type: LOGIN_SUCCESS,
-//     payload,
-// });
+export const loginSuccess = () => ({
+    type: LOGIN_SUCCESS,
+});
 
 export const loginFailure = (payload: LoginFailurePayload) => ({
     type: LOGIN_FAILURE,
     payload,
 });
 
-export const validationError = (payload: ValidationErrorPayload) => ({
-    type: VALIDATION_ERROR,
+export const validationErrors = (payload: ValidationErrorPayload) => ({
+    type: VALIDATION_ERRORS,
     payload,
 });
 
 
+// export const refreshTokenRequest = () => ({ type: "REFRESH_TOKEN_REQUEST" });
+
+// export const refreshTokenSuccess = (tokens: {
+//     access_token: string;
+//     refresh_token: string;
+// }) => ({
+//     type: REFRESH_TOKEN_SUCCESS,
+//     payload: tokens,
+// });
+
+// export const refreshTokenFailure = (error: string) => ({
+//     type: REFRESH_TOKEN_FAILURE,
+//     payload: error,
+// });
+
+// export const logout = () => ({ type: LOGOUT });
+
+
 
 const initialState: AuthState = {
+    isAuthenticated: false,
     loading: false,
     error: null,
     validationErrors: [],
 }
 
-export const authReducer = (state = initialState, action: AuthActionTypes) => {
+export const authReducer = (state: AuthState = initialState, action: AuthActionTypes) => {
     switch (action.type) {
         case LOGIN_REQUEST:
             return {
                 ...state,
                 loading: true,
                 error: null,
-                validationError: []
+                validationErrors: []
             };
-        // case LOGIN_SUCCESS:
-        //     return {
-        //         ...state,
-        //         loading: false,
-        //         error: null,
-        //         validationError: []
-        //     };
+        case LOGIN_SUCCESS:
+            return {
+                ...state,
+                isAuthenticated: true,
+                loading: false,
+                error: null,
+                validationErrors: []
+            };
         case LOGIN_FAILURE:
             return {
                 ...state,
                 error: action.payload.error,
                 validationErrors: []
             };
-        case VALIDATION_ERROR:
+        case VALIDATION_ERRORS:
             return {
                 ...state,
-                validationError: action.payload.errors,
+                validationErrors: action.payload.errors,
             }
         default: return state;
     }
