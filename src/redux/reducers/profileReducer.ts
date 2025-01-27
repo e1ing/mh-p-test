@@ -17,9 +17,9 @@ export const profileSuccess = (profile: ProfileState['profile']) => ({
     payload: profile,
 });
 
-export const profileFailure = (error: string) => ({
+export const profileFailure = (payload: {error: string}) => ({
     type: PROFILE_FAILURE,
-    payload: error,
+    payload,
 });
 
 interface ProfileRequestAction {

@@ -8,7 +8,7 @@ function* profileSaga() {
         yield put(profileSuccess(res));
     } catch (error) {
         if (error instanceof Error) {
-            yield put(profileFailure(error.message));
+            yield put(profileFailure({error: error.message}));
         }
     }
 }

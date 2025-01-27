@@ -46,9 +46,9 @@ export const postsSuccess = (data: {
     payload: data,
 });
 
-export const postsFailure = (error: string) => ({
+export const postsFailure = (payload: {error: string}) => ({
     type: POSTS_FAILURE,
-    payload: error,
+    payload,
 });
 
 

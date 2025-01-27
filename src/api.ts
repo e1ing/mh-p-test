@@ -1,8 +1,11 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { deleteCookie, getCookie, setCookie } from './utils/cookiseUtil';
-import { logout } from './redux/reducers/authReducer';
+import { AuthActionTypes, loginFailure, LoginFailurePayload, logout } from './redux/reducers/authReducer';
 import { store } from './redux/store';
-// import  from 'redux'
+import { AnyAction } from 'redux';
+import { profileFailure } from './redux/reducers/profileReducer';
+import { postsFailure } from './redux/reducers/postsReducer';
+
 export interface AuthResponse {
     access_token: string,
     refresh_token: string,
@@ -45,13 +48,6 @@ export interface PostType {
     tagNames: Array<string>,
     updatedAt: string,
     createdAt: string
-}
-
-export interface PostPagination {
-    currentPage: number,
-    pageCount: number,
-    postsPerPage: number;
-    totalPostsCount: number;
 }
 
 export const api = axios.create({
@@ -119,10 +115,15 @@ export const login = async (email: string, password: string) => {
         return res.data;
     }
     catch (error) {
-        console.error('Ошибка при авторизации:', error);
-        throw error;
-    }
-}
+        if (error instanceof Error) {
+            store.dispatch<AnyAction>(loginFailure({ error: error.message }));
+                } else {
+                    store.dispatch<AnyAction>(loginFailure({ error: 'Произошла ошибка' }));
+                }
+                throw error;
+            }
+        }
+        
 
 export const getProfile = async () => {
     try {
@@ -130,17 +131,25 @@ export const getProfile = async () => {
         });
         return res.data;
     } catch (error) {
-        console.error('Ошибка при получении профиля:', error);
-        throw error;
-    }
+        if (error instanceof Error) {
+            store.dispatch<AnyAction>(profileFailure({ error: error.message }));
+                } else {
+                    store.dispatch<AnyAction>(profileFailure({ error: 'Произошла ошибка' }));
+                }
+                throw error;
+            }
 };
 
 export const getPosts = async (page: number) => {
     try {
         const res = await api.get<AxiosResponse>('/manage/posts?page='+page);
         return res;
-    } catch (error) {
-        console.error('Ошибка при получении постов:', error);
-        throw error;
-    }
+    } catch (error)  {
+        if (error instanceof Error) {
+            store.dispatch<AnyAction>(postsFailure({ error: error.message }));
+                } else {
+                    store.dispatch<AnyAction>(postsFailure({ error: 'Произошла ошибка' }));
+                }
+                throw error;
+            }
 };

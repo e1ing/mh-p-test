@@ -15,7 +15,7 @@ function* postsSaga(action:PostsRequestAction) {
         }));
     } catch (error) {
         if (error instanceof Error) {
-            yield put(postsFailure(error.message));
+            yield put(postsFailure({error: error.message}));
         }
     }
 }
