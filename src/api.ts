@@ -126,7 +126,6 @@ export const login = async (email: string, password: string) => {
 
 export const getProfile = async () => {
     try {
-        const accessToken = getCookie('access_token');
         const res = await api.get<AxiosResponse<Profile>>('/profile', {
         });
         return res.data;
@@ -138,7 +137,6 @@ export const getProfile = async () => {
 
 export const getPosts = async (page: number) => {
     try {
-        const accessToken = getCookie('access_token');
         const res = await api.get<AxiosResponse>('/manage/posts?page='+page);
         return res;
     } catch (error) {
