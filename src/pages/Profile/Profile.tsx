@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { profileRequest } from '../../redux/reducers/profileReducer';
 import { AppRootStateType } from '../../redux/store';
@@ -8,8 +8,8 @@ import { UserOutlined, MailOutlined, PhoneOutlined, ClockCircleOutlined, Loading
 import Title from 'antd/es/typography/Title';
 import Text from 'antd/es/typography/Text';
 import { deleteCookie } from '../../utils/cookiseUtil';
+import { useNavigate } from 'react-router-dom';
 import './Profile.scss';
-import { Navigate, useNavigate } from 'react-router-dom';
 
 export const Profile = () => {
     const dispatch = useDispatch();

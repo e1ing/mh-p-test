@@ -5,8 +5,6 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
 export const VALIDATION_ERRORS = "VALIDATION_ERRORS";
 export const LOGOUT = "LOGOUT";
-// export const REFRESH_TOKEN_SUCCESS = "REFRESH_TOKEN_SUCCESS";
-// export const REFRESH_TOKEN_FAILURE = "REFRESH_TOKEN_FAILURE";
 
 export interface AuthState {
     isAuthenticated: boolean

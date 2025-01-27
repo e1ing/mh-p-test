@@ -66,7 +66,6 @@ export type PostsActionType = PostsRequestAction | PostsSuccessAction | PostsFai
 
 export const postReducer = (state: PostsState = initialState, action: PostsActionType) => {
     switch (action.type) {
-        // Загрузка постов
         case POSTS_REQUEST:
             return {
                 ...state,

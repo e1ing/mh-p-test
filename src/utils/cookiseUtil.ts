@@ -1,6 +1,6 @@
 export function setCookie(name: string, value: string, expiresInMs: number, path = '/', secure = false, sameSite = 'Lax') {
     const expires = new Date();
-    expires.setTime(expires.getTime() + expiresInMs); // Добавляем миллисекунды к текущему времени
+    expires.setTime(expires.getTime() + expiresInMs); 
     const expiresString = `expires=${expires.toUTCString()}`;
     const secureString = secure ? 'secure' : '';
     const sameSiteString = `SameSite=${sameSite}`;

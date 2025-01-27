@@ -1,7 +1,7 @@
 import { Button, Card, Form, Input } from "antd"
-import "./Login.scss";
 import { useDispatch } from "react-redux";
 import { loginRequest } from "../../redux/reducers/authReducer";
+import "./Login.scss";
 
 export const Login = () => {
     const dispatch = useDispatch();

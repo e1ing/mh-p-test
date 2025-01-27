@@ -25,7 +25,6 @@ export const Posts = () => {
     ) => {
         navigate(`/posts/${page}`)
     }
-    const searchParams = new URLSearchParams(location.search)
 
     useEffect(() => {
         dispatch(postsRequest(currentPage));

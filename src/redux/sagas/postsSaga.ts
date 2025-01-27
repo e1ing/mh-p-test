@@ -5,7 +5,6 @@ import { AxiosResponse } from "axios";
 
 function* postsSaga(action:PostsRequestAction) {
     try {
-        //@ts-ignore
         const res: AxiosResponse = yield call(getPosts, action.payload);
         yield put(postsSuccess({
             posts: res.data,

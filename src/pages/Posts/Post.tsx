@@ -1,5 +1,5 @@
 import { PostType } from "../../api";
-import { Card, List, Typography, Tag, Image } from 'antd';
+import { Card, List, Tag, Image } from 'antd';
 import { CalendarOutlined, UserOutlined, TagOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
 import Text from 'antd/es/typography/Text';
@@ -27,7 +27,6 @@ export const Post = ({ post }: PostProps) => {
             </Text>
 
             <List itemLayout="horizontal">
-                {/* Автор */}
                 <List.Item>
                     <List.Item.Meta
                         avatar={<UserOutlined />}
@@ -36,7 +35,6 @@ export const Post = ({ post }: PostProps) => {
                     />
                 </List.Item>
 
-                {/* Теги */}
                 <List.Item>
                     <List.Item.Meta
                         avatar={<TagOutlined />}
@@ -53,7 +51,6 @@ export const Post = ({ post }: PostProps) => {
                     />
                 </List.Item>
 
-                {/* Дата создания */}
                 <List.Item>
                     <List.Item.Meta
                         avatar={<CalendarOutlined />}
@@ -62,7 +59,6 @@ export const Post = ({ post }: PostProps) => {
                     />
                 </List.Item>
 
-                {/* Дата обновления */}
                 <List.Item>
                     <List.Item.Meta
                         avatar={<CalendarOutlined />}

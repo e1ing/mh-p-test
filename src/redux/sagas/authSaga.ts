@@ -1,9 +1,7 @@
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { AuthResponse, getProfile, login, Profile } from "../../api";
+import { call, put, takeEvery } from "redux-saga/effects";
+import { AuthResponse, login } from "../../api";
 import { loginFailure, loginSuccess } from "../reducers/authReducer";
-import { AxiosResponse } from "axios";
-import { getCookie, setCookie } from "../../utils/cookiseUtil";
-import { profileSuccess } from "../reducers/profileReducer";
+import { setCookie } from "../../utils/cookiseUtil";
 
 
 export function* loginSaga(action: { type: string, payload: { email: string, password: string } }) {
@@ -15,10 +13,7 @@ export function* loginSaga(action: { type: string, payload: { email: string, pas
         }
         setCookie('access_token', res.access_token, res.access_expired_at)
         setCookie('refresh_token', res.refresh_token, res.refresh_expired_at)
-        // const profile: Profile = yield call(getProfile); yield call(getProfile);
         yield put(loginSuccess());
-        // yield put(profileSuccess(profile));
-
     }
     catch (error) {
         if (error instanceof Error) {
@@ -28,9 +23,6 @@ export function* loginSaga(action: { type: string, payload: { email: string, pas
         }
     }
 }
-
-
-
 
 export function* watchAuth() {
     yield takeEvery('LOGIN_REQUEST', loginSaga);
