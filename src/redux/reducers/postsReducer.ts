@@ -6,7 +6,6 @@ export const POSTS_FAILURE = "POSTS_FAILURE";
 
 export interface PostsState {
     posts: Array<PostType>;
-
     currentPage: number,
     pageCount: number,
     postsPerPage: number;
@@ -76,7 +75,11 @@ export const postReducer = (state: PostsState = initialState, action: PostsActio
             return {
                 ...state,
                 loading: false,
-                posts: action.payload,
+                posts: action.payload.posts,
+                currentPage: action.payload.currentPage,
+                pageCount: action.payload.pageCount,
+                postsPerPage: action.payload.postsPerPage,
+                totalPostsCount: action.payload.totalPostsCount,
             };
         case POSTS_FAILURE:
             return {

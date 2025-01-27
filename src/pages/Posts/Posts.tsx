@@ -8,11 +8,9 @@ import { Card, Pagination } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const Posts = () => {
-    const { posts,
-        postsPerPage,
-        totalPostsCount } = useSelector((state: AppRootStateType) => state.posts);
-    //@ts-ignore
-    const _posts = posts.posts;
+    const { postsPerPage, totalPostsCount } = useSelector((state: AppRootStateType) => state.posts);
+    const { posts } = useSelector((state: AppRootStateType) => state.posts);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -30,8 +28,8 @@ export const Posts = () => {
 
     return (
         <Card>
-            {Array.isArray(_posts) && _posts.length > 0 ? (
-                _posts.map((p) => <Post key={p.id} post={p} />)
+            {Array.isArray(posts) && posts.length > 0 ? (
+                posts.map((p) => <Post key={p.id} post={p} />)
             ) : (
                 <p>Нет постов для отображения</p>
             )}

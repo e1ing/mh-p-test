@@ -5,9 +5,11 @@ import { useSelector } from 'react-redux';
 import { AppRootStateType } from './redux/store';
 import './App.css';
 import { Posts } from './pages/Posts/Posts';
+import { getCookie } from './utils/cookiseUtil';
 
 export const App = () => {
 
+  // const isAuthenticated: boolean = getCookie("access_token") ? true : false
   const isAuthenticated = useSelector((state: AppRootStateType) => state.auth.isAuthenticated);
 
   return (
