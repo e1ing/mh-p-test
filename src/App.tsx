@@ -9,7 +9,7 @@ import { Posts } from './pages/Posts/Posts';
 export const App = () => {
 
   const isAuthenticated = useSelector((state: AppRootStateType) => state.auth.isAuthenticated);
-  console.log("isAuthenticated", isAuthenticated)
+
   return (
     <BrowserRouter>
       <Routes>
@@ -41,7 +41,7 @@ export const App = () => {
             isAuthenticated ? (
               <Posts />
             ) : (
-              <Navigate to="/posts" replace />
+              <Navigate to="/posts/:page?" replace />
             )
           }
         />

@@ -6,6 +6,12 @@ export const POSTS_FAILURE = "POSTS_FAILURE";
 
 export interface PostsState {
     posts: Array<PostType>;
+
+    currentPage: number,
+    pageCount: number,
+    postsPerPage: number;
+    totalPostsCount: number;
+
     loading: boolean;
     error: string | null;
 }
@@ -24,13 +30,19 @@ export interface PostsFailureAction {
     payload: { error: string };
 }
 
-export const postsRequest = () => ({
+export const postsRequest = (page: number) => ({
     type: POSTS_REQUEST,
+    payload: page,
 });
 
-export const postsSuccess = (posts: Array<PostType>) => ({
+export const postsSuccess = (data: {
+    posts: Array<PostType>, currentPage: number,
+    pageCount: number,
+    postsPerPage: number,
+    totalPostsCount: number
+}) => ({
     type: POSTS_SUCCESS,
-    payload: posts,
+    payload: data,
 });
 
 export const postsFailure = (error: string) => ({
@@ -41,6 +53,10 @@ export const postsFailure = (error: string) => ({
 
 const initialState: PostsState = {
     posts: [],
+    currentPage: 0,
+    pageCount: 0,
+    postsPerPage: 0,
+    totalPostsCount: 0,
     loading: false,
     error: null,
 };

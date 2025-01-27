@@ -129,12 +129,12 @@ export const getPosts = async () => {
         if (!accessToken) {
             throw new Error('access_token отсутствует в куках');
         }
-        const res = await api.get<AxiosResponse<Array<PostType>>>('/manage/posts', {
+        const res = await api.get<AxiosResponse>('/manage/posts', {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        return res.data;
+        return res;
     } catch (error) {
         console.error('Ошибка при получении постов:', error);
         throw error;
