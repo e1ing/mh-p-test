@@ -15,48 +15,20 @@ export const App = () => {
       <Routes>
         <Route
           path="/login"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/profile" replace />
-            ) : (
-              <Login />
-            )
-          }
+          element={isAuthenticated ? (<Navigate to="/profile" replace />) : (<Login />)}
         />
-
         <Route
           path="/profile"
-          element={
-            isAuthenticated ? (
-              <Profile />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
+          element={isAuthenticated ? (<Profile />) : (<Navigate to="/login" replace />)}
         />
-
         <Route
           path="/posts/:page?"
-          element={
-            isAuthenticated ? (
-              <Posts />
-            ) : (
-              <Navigate to="/posts/:page?" replace />
-            )
-          }
+          element={isAuthenticated ? (<Posts />) : (<Navigate to="/posts/:page?" replace />)}
         />
-
         <Route
           path="/"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/profile" replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
+          element={isAuthenticated ? (<Navigate to="/profile" replace />) : (<Navigate to="/login" replace />)}
         />
-
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

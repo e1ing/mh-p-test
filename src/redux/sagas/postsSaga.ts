@@ -7,7 +7,7 @@ function* postsSaga() {
     try {
         const res: AxiosResponse = yield call(getPosts);
         yield put(postsSuccess({
-            posts: res.data.posts,
+            posts: res.data,
             currentPage: Number(res.headers['x-pagination-current-page']) || 0,
             pageCount: Number(res.headers['x-pagination-page-count']) || 0,
             postsPerPage: Number(res.headers['x-pagination-per-page']) || 0,

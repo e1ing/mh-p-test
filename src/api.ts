@@ -47,7 +47,6 @@ export interface PostType {
 
 }
 
-
 export const api = axios.create({
     baseURL: 'http://localhost:3000',
     withCredentials: true,
@@ -112,9 +111,6 @@ export const getProfile = async () => {
             throw new Error('access_token отсутствует в куках');
         }
         const res = await api.get<AxiosResponse<Profile>>('/profile', {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
         });
         return res.data;
     } catch (error) {
@@ -130,9 +126,6 @@ export const getPosts = async () => {
             throw new Error('access_token отсутствует в куках');
         }
         const res = await api.get<AxiosResponse>('/manage/posts', {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
         });
         return res;
     } catch (error) {

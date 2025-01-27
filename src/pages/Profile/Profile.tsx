@@ -39,7 +39,7 @@ export const Profile = () => {
                     <Button type="primary" danger onClick={handleLogout}>
                         Выйти
                     </Button>,
-                    <Button type="link" onClick={() => navigate("/posts/:page?")}>
+                    <Button type="link" onClick={() => navigate("/posts/:page=1")}>
                         Посты
                     </Button>,
                 ]}
