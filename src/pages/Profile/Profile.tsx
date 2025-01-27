@@ -9,10 +9,12 @@ import Title from 'antd/es/typography/Title';
 import Text from 'antd/es/typography/Text';
 import { deleteCookie } from '../../utils/cookiseUtil';
 import './Profile.scss';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export const Profile = () => {
     const dispatch = useDispatch();
     const { profile } = useSelector((state: AppRootStateType) => state.profile);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         deleteCookie("access_token");
@@ -22,7 +24,7 @@ export const Profile = () => {
 
     useEffect(() => {
         dispatch(profileRequest());
-    }, [dispatch, profile]);
+    }, [dispatch]);
 
     return (
         <>
@@ -36,6 +38,9 @@ export const Profile = () => {
                 actions={[
                     <Button type="primary" danger onClick={handleLogout}>
                         Выйти
+                    </Button>,
+                    <Button type="link" onClick={() => navigate("/posts/:page?")}>
+                        Посты
                     </Button>,
                 ]}
             >

@@ -15,9 +15,9 @@ export function* loginSaga(action: { type: string, payload: { email: string, pas
         }
         setCookie('access_token', res.access_token, res.access_expired_at)
         setCookie('refresh_token', res.refresh_token, res.refresh_expired_at)
-        const profile: Profile = yield call(getProfile); yield call(getProfile);
+        // const profile: Profile = yield call(getProfile); yield call(getProfile);
         yield put(loginSuccess());
-        yield put(profileSuccess(profile));
+        // yield put(profileSuccess(profile));
 
     }
     catch (error) {

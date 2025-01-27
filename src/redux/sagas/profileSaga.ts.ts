@@ -1,7 +1,6 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import { profileFailure, profileSuccess } from "../reducers/profileReducer";
 import { getProfile, Profile } from "../../api";
-import { getCookie } from "../../utils/cookiseUtil";
 
 function* profileSaga() {
     try {
@@ -14,5 +13,5 @@ function* profileSaga() {
     }
 }
 export function* watchProfile() {
-    yield takeEvery('LOGIN_REQUEST', profileSaga);
+    yield takeEvery('PROFILE_REQUEST', profileSaga);
 }

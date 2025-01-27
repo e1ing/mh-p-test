@@ -30,6 +30,23 @@ export interface Profile {
     createdAt: string
 }
 
+export interface PostType {
+
+    id: 0,
+    title: string,
+    code: string,
+    authorName: string,
+    previewPicture: {
+        id: 0,
+        name: string,
+        url: string
+    },
+    tagNames: Array<string>,
+    updatedAt: string,
+    createdAt: string
+
+}
+
 
 export const api = axios.create({
     baseURL: 'http://localhost:3000',
@@ -102,6 +119,24 @@ export const getProfile = async () => {
         return res.data;
     } catch (error) {
         console.error('Ошибка при получении профиля:', error);
+        throw error;
+    }
+};
+
+export const getPosts = async () => {
+    try {
+        const accessToken = getCookie('access_token');
+        if (!accessToken) {
+            throw new Error('access_token отсутствует в куках');
+        }
+        const res = await api.get<AxiosResponse<Array<PostType>>>('/manage/posts', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.error('Ошибка при получении постов:', error);
         throw error;
     }
 };

@@ -4,6 +4,7 @@ import { BrowserRouter, HashRouter, Navigate, Route, Routes } from 'react-router
 import { useSelector } from 'react-redux';
 import { AppRootStateType } from './redux/store';
 import './App.css';
+import { Posts } from './pages/Posts/Posts';
 
 export const App = () => {
 
@@ -30,6 +31,17 @@ export const App = () => {
               <Profile />
             ) : (
               <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/posts/:page?"
+          element={
+            isAuthenticated ? (
+              <Posts />
+            ) : (
+              <Navigate to="/posts" replace />
             )
           }
         />
