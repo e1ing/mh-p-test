@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import Cookies from 'js-cookie';
+import { deleteCookie, getCookie, setCookie } from './utils/cookiseUtil';
 
 export interface AuthResponse {
     access_token: string,
@@ -29,15 +29,7 @@ export interface Profile {
     updatedAt: string,
     createdAt: string
 }
-// const instance = axios.create({
-//     baseURL: 'http://localhost:3000',
-//     headers: {
-//         "Authorization": "Bearer",
-//         'Content-Type': 'multipart/form-data',
-//         'Accept': 'application/json',
-//     },
-//     responseType: "json",
-// })
+
 
 export const api = axios.create({
     baseURL: 'http://localhost:3000',
@@ -45,8 +37,7 @@ export const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-    const token = Cookies.get('access_token');
-
+    const token = getCookie('access_token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -63,21 +54,18 @@ api.interceptors.response.use(
 
             try {
                 const response = await axios.post('/auth/token-refresh', {
-                    refresh_token: Cookies.get('refresh_token')
+                    refresh_token: getCookie('refresh_token')
                 },
                 );
 
-                Cookies.set('access_token', response.data.access_token, {
-                    expires: new Date(response.data.access_expired_at * 1000),
-                });
+                setCookie('access_token', response.data.access_token, response.data.access_expired_at);
 
                 originalRequest.headers.Authorization = `Bearer ${response.data.access_token}`;
                 return api(originalRequest);
             } catch (refreshError) {
                 console.error('Ошибка при обновлении токена:', refreshError);
-                Cookies.remove('access_token');
-                Cookies.remove('refresh_token');
-                // window.location.href = '/login';
+                deleteCookie('access_token');
+                deleteCookie('refresh_token');
                 return Promise.reject(refreshError);
             }
         }
@@ -101,14 +89,12 @@ export const login = async (email: string, password: string) => {
 }
 
 export const getProfile = async () => {
-    const accessToken = Cookies.get('access_token');
-
-    if (!accessToken) {
-        throw new Error('access_token отсутствует в куках');
-    }
-
     try {
-        const res = await axios.get<Profile>('/profile', {
+        const accessToken = getCookie('access_token');
+        if (!accessToken) {
+            throw new Error('access_token отсутствует в куках');
+        }
+        const res = await api.get<AxiosResponse<Profile>>('/profile', {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },

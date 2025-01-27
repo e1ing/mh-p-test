@@ -4,25 +4,50 @@ import { BrowserRouter, HashRouter, Navigate, Route, Routes } from 'react-router
 import { useSelector } from 'react-redux';
 import { AppRootStateType } from './redux/store';
 import './App.css';
-import { useEffect } from 'react';
 
 export const App = () => {
 
   const isAuthenticated = useSelector((state: AppRootStateType) => state.auth.isAuthenticated);
-  console.log("isAuthenticated:", isAuthenticated);
-
-
+  console.log("isAuthenticated", isAuthenticated)
   return (
-    <HashRouter >
+    <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
         <Route
-          path="*"
-          element={<Navigate to={isAuthenticated ? "/profile" : "/login"} replace />}
+          path="/login"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/profile" replace />
+            ) : (
+              <Login />
+            )
+          }
         />
+
+        <Route
+          path="/profile"
+          element={
+            isAuthenticated ? (
+              <Profile />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/profile" replace />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </HashRouter >
+    </BrowserRouter>
   );
 }
 

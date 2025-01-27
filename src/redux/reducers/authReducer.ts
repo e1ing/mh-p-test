@@ -3,7 +3,7 @@ export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
 export const VALIDATION_ERRORS = "VALIDATION_ERRORS";
-// export const LOGOUT = "LOGOUT";
+export const LOGOUT = "LOGOUT";
 // export const REFRESH_TOKEN_SUCCESS = "REFRESH_TOKEN_SUCCESS";
 // export const REFRESH_TOKEN_FAILURE = "REFRESH_TOKEN_FAILURE";
 
@@ -37,6 +37,10 @@ interface LoginSuccessAction {
     type: typeof LOGIN_SUCCESS;
 }
 
+interface LogoutAction {
+    type: typeof LOGOUT;
+}
+
 interface LoginFailureAction {
     type: typeof LOGIN_FAILURE;
     payload: LoginFailurePayload;
@@ -52,6 +56,7 @@ export type AuthActionTypes =
     | LoginSuccessAction
     | LoginFailureAction
     | ValidationErrorAction
+    | LogoutAction
 
 
 /**Action creators */
@@ -74,23 +79,7 @@ export const validationErrors = (payload: ValidationErrorPayload) => ({
     payload,
 });
 
-
-// export const refreshTokenRequest = () => ({ type: "REFRESH_TOKEN_REQUEST" });
-
-// export const refreshTokenSuccess = (tokens: {
-//     access_token: string;
-//     refresh_token: string;
-// }) => ({
-//     type: REFRESH_TOKEN_SUCCESS,
-//     payload: tokens,
-// });
-
-// export const refreshTokenFailure = (error: string) => ({
-//     type: REFRESH_TOKEN_FAILURE,
-//     payload: error,
-// });
-
-// export const logout = () => ({ type: LOGOUT });
+export const logout = () => ({ type: LOGOUT })
 
 
 
@@ -128,7 +117,15 @@ export const authReducer = (state: AuthState = initialState, action: AuthActionT
             return {
                 ...state,
                 validationErrors: action.payload.errors,
-            }
+            };
+        case LOGOUT:
+            return {
+                ...state,
+                isAuthenticated: false,
+                loading: false,
+                error: null,
+                validationErrors: []
+            };
         default: return state;
     }
 }

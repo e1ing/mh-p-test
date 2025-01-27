@@ -1,29 +1,11 @@
+import { Profile } from "../../api";
+
 export const PROFILE_REQUEST = "PROFILE_REQUEST";
 export const PROFILE_SUCCESS = "PROFILE_SUCCESS";
 export const PROFILE_FAILURE = "PROFILE_FAILURE";
 
 export interface ProfileState {
-    profile: {
-        id: number,
-        phone: string,
-        email: string,
-        name: string,
-        lastName: string,
-        secondName: string,
-        roles: [
-            {
-                role: string,
-                name: string
-            }
-        ],
-        status: {
-            code: number,
-            name: string
-        },
-        isActive: true,
-        updatedAt: string,
-        createdAt: string
-    } | null,
+    profile: Profile | null,
     loading: boolean,
     error: string | null,
 }

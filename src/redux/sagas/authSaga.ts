@@ -1,8 +1,9 @@
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { AuthResponse, login } from "../../api";
-import { loginFailure, loginRequest, loginSuccess } from "../reducers/authReducer";
+import { AuthResponse, getProfile, login, Profile } from "../../api";
+import { loginFailure, loginSuccess } from "../reducers/authReducer";
 import { AxiosResponse } from "axios";
-import Cookies from "js-cookie";
+import { getCookie, setCookie } from "../../utils/cookiseUtil";
+import { profileSuccess } from "../reducers/profileReducer";
 
 
 export function* loginSaga(action: { type: string, payload: { email: string, password: string } }) {
@@ -12,19 +13,12 @@ export function* loginSaga(action: { type: string, payload: { email: string, pas
         if (!res.access_token || !res.refresh_token) {
             throw new Error('Токены отсутствуют в ответе сервера');
         }
-
-        Cookies.set('access_token', res.refresh_token, {
-            expires: new Date(res.refresh_expired_at * 1000),
-            secure: true,
-            sameSite: 'lax',
-        });
-
-        Cookies.set('refresh_token', res.refresh_token, {
-            expires: new Date(res.refresh_expired_at * 1000),
-            secure: true,
-            sameSite: 'lax',
-        });
+        setCookie('access_token', res.access_token, res.access_expired_at)
+        setCookie('refresh_token', res.refresh_token, res.refresh_expired_at)
+        const profile: Profile = yield call(getProfile); yield call(getProfile);
         yield put(loginSuccess());
+        yield put(profileSuccess(profile));
+
     }
     catch (error) {
         if (error instanceof Error) {
@@ -35,36 +29,9 @@ export function* loginSaga(action: { type: string, payload: { email: string, pas
     }
 }
 
-function* refreshTokenSaga() {
-    // try {
-    //     const refreshToken = Cookies.get("refresh_token");
-    //     const res = yield call(axios.post, `${API_URL}/auth/refresh-token`, {
-    //         refresh_token: refreshToken,
-    //     });
-
-    //     const { access_token, refresh_token, access_expired_at, refresh_expired_at } =
-    //         response.data;
-
-    //     Cookies.set("access_token", access_token, {
-    //         expires: new Date(access_expired_at * 1000),
-    //         secure: true,
-    //         sameSite: "Strict",
-    //     });
-    //     Cookies.set("refresh_token", refresh_token, {
-    //         expires: new Date(refresh_expired_at * 1000),
-    //         secure: true,
-    //         sameSite: "Strict",
-    //     });
-
-    //     yield put(refreshTokenSuccess(response.data));
-    // } catch (error) {
-    //     yield put(refreshTokenFailure(error.message));
-    // }
-}
 
 
 
 export function* watchAuth() {
-    yield takeLatest('LOGIN_REQUEST', loginSaga);
-    yield takeLatest("REFRESH_TOKEN_REQUEST", refreshTokenSaga);
+    yield takeEvery('LOGIN_REQUEST', loginSaga);
 }
